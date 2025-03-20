@@ -1,26 +1,36 @@
-class Ship {
-    hit(hitTimes) {
-        return `ship hit ${hitTimes} times`;
-    }
+function Ship(length) {
+    const ship = {
+        length,
+        Hit: 0,
+        sunk: false,
 
-    isSunk() {
-       return "Has ship been sunk?";
+        shipDetails() {
+            return `length: ${this.length}, hit: ${this.Hit}, sunk: ${this.sunk}`
+        },
+
+        hits() {
+            return this.Hit++;
+        },
+
+        isSunk() {
+            if (this.Hit >= this.length) {
+                return this.sunk = true;
+            } 
+        }
+
+
     }
+    return ship
 }
 
-class Gameboard {
-    receiveAttack() {
-        return 'hit or miss';
-    }
+const Gameboard = () => {
+    
 }
 
 class Player {
+    // player
+    // computer
 
 }
 
-const ship = new Ship();
-const gameboard = new Gameboard();
-
-console.log(ship.hit(6));
-console.log(ship.isSunk());
-console.log(gameboard.receiveAttack());
+module.exports = { Ship };
