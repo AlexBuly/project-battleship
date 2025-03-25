@@ -18,7 +18,6 @@ function Ship(length) {
             } 
         }
 
-
     }
     return ship
 }
@@ -82,7 +81,7 @@ function Gameboard () {
 }
 
 const gameboard = Gameboard();
-gameboard.placeShip(0, 3, "right");
+gameboard.placeShip(9, 0, "up");
 gameboard.gameboard();
 
 
