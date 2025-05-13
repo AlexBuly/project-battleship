@@ -1,0 +1,9 @@
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+
+button {
+    font-size: 1em;
+}

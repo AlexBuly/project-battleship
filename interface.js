@@ -1,18 +1,19 @@
 // interface.js
+//import { Gameboard } from "./script.js";
+import { Ship } from "./script.js";
 import { Gameboard } from "./script.js";
 
-const gameboard = Gameboard();
+const gameD = document.querySelector(".game-board");
+const ship = Ship();
 
-const rows = 10;
-const columns = 10;
- const board = [];
- const div = document.querySelector(".game-board");
+ const gameboard = Gameboard();
+ const carrier = gameboard.getCrusier();
 
-    for (let i = 0; i < rows; i++) {
-        board[i] = [];
-        for (let j = 0; j < columns; j++) {
-            const l = document.createElement("button");
-            board[i].push(gameboard.getBoard());
-            div.appendChild(l);
-        }
-    }
+ const board = gameboard.getBoard();
+ gameD.textContent = board;
+
+ gameboard.placeShip(carrier, board, 0, 0, "down");
+ gameboard.recieveAttack(board, 0, 0);
+
+ console.log(board);
+ console.log(carrier);
