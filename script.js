@@ -5,10 +5,6 @@ export function Ship() {
             length,
             hitCount: 0,
             sunk: false,
-            leftCol: "",
-            rightCol: "",
-            upRow: "",
-            downRow: "",
 
             hit() {
                 this.hitCount++;
@@ -21,30 +17,6 @@ export function Ship() {
                 }
             },
 
-            setPositions() {
-                if (this.length === 2) {
-                    this.rightCol = 8;
-                    this.leftCol = 1;
-                    this.downRow = 8;
-                    this.upRow = 1;
-                } else if (this.length === 3) {
-                    this.rightCol = 7;
-                    this.leftCol = 2;
-                    this.downRow = 7;
-                    this.upRow = 2;
-                } else if (this.length === 4) {
-                    this.rightCol = 6;
-                    this.leftCol = 3;
-                    this.downRow = 6;
-                    this.upRow = 3;
-                } else if (this.length === 5) {
-                    this.rightCol = 5;
-                    this.leftCol = 4;
-                    this.downRow = 5;
-                    this.upRow = 4;
-                }
-            }, 
-
             shipDetails() {
                 return `name: ${this.name}, length: ${this.length}, hits: ${this.hitCount}, sunk: ${this.sunk}`
             },
@@ -53,19 +25,10 @@ export function Ship() {
                 const ship = Ship();
 
                 const carrier = ship.addShip("carrier", 5);
-                carrier.setPositions();
-
                 const battleship = ship.addShip("battleship", 4);
-                battleship.setPositions();
-
                 const cruiser = ship.addShip("cruiser", 3);
-                cruiser.setPositions();
-
                 const submarine = ship.addShip("submarine", 3);
-                submarine.setPositions();
-
                 const destroyer = ship.addShip("destroyer", 2);
-                destroyer.setPositions();
 
                 const getCarrier = () => carrier;
                 const getBattleship = () => battleship;
@@ -108,49 +71,40 @@ export function Gameboard () {
 
     const placeShip = (shipName, array, rowStart, colStart, direction) => {
         let marking
-        if (shipName.name === "destroyer") {
-            marking = "D";
-        } else if (shipName.name === "cruiser") {
-            marking = "CU";
-        } else if (shipName.name === "carrier") {
-            marking = "CA";
-        } else if (shipName.name === "battleship") {
-            marking = "B";
-        } else if (shipName.name === "submarine") { 
-            marking = "S";
+
+        switch (shipName.name) {
+            case "destroyer": marking = "D"; break;
+            case "cruiser": marking = "CU"; break;
+            case "carrier": marking = "CA"; break;
+            case "battleship": marking = "B"; break;
+            case "submarine": marking = "S"; break;
+            default: return; 
         }
 
+        const len = shipName.length;
+
         if (direction === "right") {
-            if (colStart <= 7 && rowStart <= shipName.rightCol) {
-                let i = 0;
-                while (i < shipName.length) {
-                    i++;
-                    array[rowStart][colStart++] = marking;
+            if (colStart + len <= 10) {
+                for (let i = 0; i < len; i++) {
+                    array[rowStart][colStart + i] = marking;
                 }
-            } 
+            }
         } else if (direction === "down") {
-            if (rowStart <= shipName.downRow && colStart <= 9) {
-                let i = 0;
-                while (i < shipName.length) {
-                    i++;
-                    array[rowStart++][colStart] = marking;
+            if (rowStart + len <= 10) {
+                for (let i = 0; i < len; i++) {
+                    array[rowStart + i][colStart] = marking;
                 }
             }
         } else if (direction === "left") {
-            if (colStart <= 9 && colStart >= shipName.leftCol && rowStart <= 9) {
-                let i = 0;
-                while (i < ship.length) {
-                    i++;
-                    array[rowStart][colStart--] = marking;
+            if (colStart - len + 1 >= 0) {
+                for (let i = 0; i < len; i++) {
+                    array[rowStart][colStart - i] = marking;
                 }
-
             }
         } else if (direction === "up") {
-            if (rowStart <= 9 && rowStart >= shipName.upRow && colStart <= 9) {
-                let i = 0;
-                while (i < shipName.length) {
-                    i++;
-                    array[rowStart--][colStart] = marking;
+            if (rowStart - len + 1 >= 0) {
+                for (let i = 0; i < len; i++) {
+                    array[rowStart - i][colStart] = marking;
                 }
             }
         }
