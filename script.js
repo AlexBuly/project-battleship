@@ -21,40 +21,21 @@ export function Ship() {
                 return `name: ${this.name}, length: ${this.length}, hits: ${this.hitCount}, sunk: ${this.sunk}`
             },
 
-            gameShips() {
-                const ship = Ship();
-
-                const carrier = ship.addShip("carrier", 5);
-                const battleship = ship.addShip("battleship", 4);
-                const cruiser = ship.addShip("cruiser", 3);
-                const submarine = ship.addShip("submarine", 3);
-                const destroyer = ship.addShip("destroyer", 2);
-
-                const getCarrier = () => carrier;
-                const getBattleship = () => battleship;
-                const getSubmarine = () => submarine;
-                const getCrusier = () => cruiser;
-                const getDestroyer = () => destroyer;
-
-              
-                 
-                return {getCarrier, getBattleship, getSubmarine, getCrusier, getDestroyer}
-            }
-
          };
    }
+   
    return {addShip}
 }
 
 export function Gameboard () {
     const ship = Ship();
-    const addShips = ship.addShip();
-    const gameShips = addShips.gameShips();
-    const carrier = gameShips.getCarrier()
-    const cruiser = gameShips.getCrusier()
-    const submarine = gameShips.getSubmarine();
-    const destroyer = gameShips.getDestroyer();
-    const battleship = gameShips.getBattleship();
+    
+    const carrier = ship.addShip("carrier", 5);
+    const cruiser = ship.addShip("cruiser", 3);
+    const submarine = ship.addShip("submarine", 3);
+    const destroyer = ship.addShip("destroyer", 2);
+    const battleship = ship.addShip("battleship", 4);
+
 
     const gridCells = [];
     const rows = 10;
@@ -112,26 +93,17 @@ export function Gameboard () {
 
     const recieveAttack = (array, row, col) => {
         const guess = array[row][col];
-        
-        if (guess === "D") {
-            destroyer.hit();
-            console.log("hit");
-        } else if (guess === "CA") {
-            carrier.hit();
-            console.log("hit");
-            return "hit";
-        } else if (guess === "CU") {
-            cruiser.hit();
-            console.log("hit");
-        } else if (guess === "B") {
-            battleship.hit();
-            console.log("hit");
-        } else if (guess === "S") {
-            submarine.hit();
-            console.log("hit");
-        } else {
-            console.log("miss");
+
+        switch (guess) {
+            case "D" : destroyer.hit(); break;
+            case "CA" : carrier.hit(); break;
+            case "CU" : cruiser.hit(); break;
+            case "B" : battleship.hit(); break;
+            case "S" : submarine.hit(); break;
+            default: return;
         }
+
+        return guess !== "" ? console.log("hit") : console.log("miss");
     }
 
     const getCarrier = () => carrier;
@@ -141,4 +113,26 @@ export function Gameboard () {
     const getDestroyer = () => destroyer;
 
     return {placeShip, getBoard, recieveAttack, getCarrier, getBattleship, getSubmarine, getCrusier, getDestroyer}
+}
+
+ export function GameController() {
+    const board = Gameboard();
+
+    const insert = (ship, array, rowStart, colStart, direction) => {
+        board.placeShip(ship, array, rowStart, colStart, direction);
+    }
+
+    const playRound = (array, row, col, ) => {
+        board.recieveAttack(array, row, col);
+    }
+    return {
+            insert, 
+            playRound, 
+            getBoard: board.getBoard, 
+            getCarrier: board.getCarrier,
+            getBattleship: board.getBattleship,
+            getSubmarine: board.getSubmarine,
+            getCrusier: board.getCrusier,
+            getDestroyer: board.getDestroyer
+        }
 }
