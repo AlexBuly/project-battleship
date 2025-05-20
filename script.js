@@ -28,6 +28,17 @@ export function Ship() {
 }
 
 export function Gameboard () {
+    const addBoard = (array) => {
+        const rows = 10;
+        const columns = 10;
+
+        for (let i = 0; i < rows; i++) {
+            array[i] = [];
+            for (let j = 0; j < columns; j++) {
+                array[i][j] = "";
+            }
+        }
+    }
     const ship = Ship();
     
     const carrier = ship.addShip("carrier", 5);
@@ -37,18 +48,14 @@ export function Gameboard () {
     const battleship = ship.addShip("battleship", 4);
 
 
-    const gridCells = [];
-    const rows = 10;
-    const columns = 10;
-    
-    for (let i = 0; i < rows; i++) {
-      gridCells[i] = [];
-      for (let j = 0; j < columns; j++) {
-        gridCells[i][j] = "";
-      }
-    }
+    const playerBoard = [];
+    const computerBoard = [];
 
-    const getBoard = () => gridCells;
+    addBoard(playerBoard);
+    addBoard(computerBoard);
+
+    const getPlayerBoard = () => playerBoard;
+    const getComputerBoard = () => computerBoard;
 
     const placeShip = (shipName, array, rowStart, colStart, direction) => {
         let marking
@@ -112,7 +119,17 @@ export function Gameboard () {
     const getCrusier = () => cruiser;
     const getDestroyer = () => destroyer;
 
-    return {placeShip, getBoard, recieveAttack, getCarrier, getBattleship, getSubmarine, getCrusier, getDestroyer}
+    return {placeShip, getPlayerBoard, getComputerBoard, recieveAttack, getCarrier, getBattleship, getSubmarine, getCrusier, getDestroyer}
+}
+
+export function Player() {
+    const addPlayer = (name, gameboard) => {
+        return {
+            name,
+            gameboard,
+        }
+    }
+    return {addPlayer}
 }
 
  export function GameController() {
@@ -128,7 +145,8 @@ export function Gameboard () {
     return {
             insert, 
             playRound, 
-            getBoard: board.getBoard, 
+            getPlayerBoard: board.getPlayerBoard, 
+            getComputerBoard: board.getComputerBoard,
             getCarrier: board.getCarrier,
             getBattleship: board.getBattleship,
             getSubmarine: board.getSubmarine,

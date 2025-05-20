@@ -3,6 +3,18 @@
 import { GameController } from "./script.js";
 
  function GameDisplay() {
+   const displayBoard = (board, className, parent) => {
+      board.forEach((row, rowIndex) => {
+         row.forEach((colIndex) => {
+            const cellButton = document.createElement("button");
+            cellButton.classList.add(className);
+            cellButton.dataset.row = rowIndex;
+            cellButton.dataset.column = colIndex;
+            cellButton.textContent = board[rowIndex][colIndex];
+            parent.appendChild(cellButton);
+         });
+      })
+   }
     const game = GameController();
     const carrier = game.getCarrier();
     const cruiser = game.getCrusier();
@@ -10,20 +22,11 @@ import { GameController } from "./script.js";
     const destroyer = game.getDestroyer();
     const battleship = game.getBattleship();
 
-    let currentShip;
+    const getplayerBoard = game.getPlayerBoard();
+    const getComputerBoard = game.getComputerBoard();
 
-    const board = game.getBoard();
-    const gameBoard = document.querySelector(".board");
-
-    game.insert(carrier, board, 0, 0, "down");
-    game.insert(destroyer, board, 0, 2, "down");
-    game.insert(submarine, board, 9, 4, "right");
-    game.insert(battleship, board, 1, 9, "down");
-    game.insert(cruiser, board, 9, 1, "up");
-
-    game.playRound(board, 9, 4);
-    game.playRound(board, 9, 5);
-    game.playRound(board, 9, 6);
+    const playerBoard = document.querySelector(".player-board");
+    const computerBoard = document.querySelector(".computer-board");
 
     const cruiserInfo = document.querySelector(".cruiser-info");
     cruiserInfo.textContent = cruiser.shipDetails();
@@ -36,17 +39,8 @@ import { GameController } from "./script.js";
     const submarineInfo = document.querySelector(".submarine-info");
     submarineInfo.textContent = submarine.shipDetails();
     
-
-    board.forEach((row, rowIndex) => {
-              row.forEach((cell, colIndex) => {
-              const cellButton = document.createElement("button");
-              cellButton.classList.add("cell");
-              cellButton.dataset.row = rowIndex;
-              cellButton.dataset.column = colIndex;
-              cellButton.textContent = board[rowIndex][colIndex];
-              gameBoard.appendChild(cellButton);
-              });
-          });
+    displayBoard(getplayerBoard, "player-cell", playerBoard);
+    displayBoard(getComputerBoard, "computer-cell", computerBoard)
 
     const clickHandler = (e) => {
        const selectedColumn = e.target.dataset.column;
