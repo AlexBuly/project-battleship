@@ -22,9 +22,63 @@ export function Ship() {
             },
 
          };
-   }
+    }
+
+    const HumanShips = () => {
+        const humanCarrier = addShip("carrier", 5);
+        const humanCruiser = addShip("cruiser", 3);
+        const humanSubmarine = addShip("submarine", 3);
+        const humanDestroyer = addShip("destroyer", 2);
+        const humanBattleShip = addShip("battleship", 4);
+
+        const getHumanCarrier = () => humanCarrier;
+        const getHumanCruiser = () => humanCruiser;
+        const getHumanSubmarine = () => humanSubmarine;
+        const getHumanDestroyer = () => humanDestroyer;
+        const getHumanBattleShip = () => humanBattleShip;
+
+        return {getHumanCarrier, getHumanCruiser, getHumanSubmarine, getHumanDestroyer, getHumanBattleShip};
+    }
+
+    const ComputerShips = () => {
+        const computerCarrier = addShip("carrier", 5);
+        const computerCruiser = addShip("cruiser", 3);
+        const computerSubmarine = addShip("submarine", 3);
+        const computerDestroyer = addShip("destroyer", 2);
+        const computerBattleShip = addShip("battleship", 4);
+
+        const getComputerCarrier = () => computerCarrier;
+        const getComputerCruiser = () => computerCruiser;
+        const getComputerSubmarine = () => computerSubmarine;
+        const getComputerDestoryer = () => computerDestroyer;
+        const getComputerBattleShip = () => computerBattleShip;
+
+        return {getComputerCarrier, getComputerCruiser, getComputerSubmarine, getComputerDestoryer, getComputerBattleShip}
+    }
+
+    const ships = () => {
+        const humanShips = HumanShips();
+        const computerShips = ComputerShips();
+        const getHumanShips = () => humanShips;
+        const getComputerShips = () => computerShips;
+        return {
+            humanCarrier: humanShips.getHumanCarrier,
+            humanCruiser: humanShips.getHumanCruiser,
+            humanSubmarine: humanShips.getHumanSubmarine,
+            humanDestroyer: humanShips.getHumanDestroyer,
+            humanBattleShip: humanShips.getHumanBattleShip,
+            getHumanShips, 
+
+            computerCarrier: computerShips.getComputerCarrier,
+            computerCruiser: computerShips.getComputerCruiser,
+            computerSubmarine: computerShips.getComputerSubmarine,
+            computerDestroyer: computerShips.getComputerDestoryer,
+            computerBattleShip: computerShips.getComputerBattleShip,
+            getComputerShips
+        }
+    }
    
-   return {addShip}
+   return {addShip, ships}
 }
 
 export function Gameboard () {
@@ -40,22 +94,20 @@ export function Gameboard () {
         }
     }
     const ship = Ship();
-    
-    const carrier = ship.addShip("carrier", 5);
-    const cruiser = ship.addShip("cruiser", 3);
-    const submarine = ship.addShip("submarine", 3);
-    const destroyer = ship.addShip("destroyer", 2);
-    const battleship = ship.addShip("battleship", 4);
+    const ships = ship.ships();
+    const humanShips = ships.getHumanShips();
+    const humanCarrier = ships.humanCarrier();
+    const humanCruiser = ships.humanCruiser();
+    const humanDestroyer = ships.humanDestroyer();
+    const humanBattleShip = ships.humanBattleShip();
+    const humanSubmarine = ships.humanSubmarine();
 
-
-    const playerBoard = [];
-    const computerBoard = [];
-
-    addBoard(playerBoard);
-    addBoard(computerBoard);
-
-    const getPlayerBoard = () => playerBoard;
-    const getComputerBoard = () => computerBoard;
+    const computerCarrier = ships.computerCarrier();
+    const computerCruiser = ships.computerCruiser(); 
+    const computerDestroyer = ships.computerDestroyer();
+    const computerBattleShip = ships.computerBattleShip();
+    const computerSubmarine = ships.computerSubmarine();
+    const computerShips = ships.getComputerShips();
 
     const placeShip = (shipName, array, rowStart, colStart, direction) => {
         let marking
@@ -98,59 +150,67 @@ export function Gameboard () {
         }
     }
 
-    const recieveAttack = (array, row, col) => {
+    const recieveAttack = (turn, array, row, col) => {
         const guess = array[row][col];
 
-        switch (guess) {
-            case "D" : destroyer.hit(); break;
-            case "CA" : carrier.hit(); break;
-            case "CU" : cruiser.hit(); break;
-            case "B" : battleship.hit(); break;
-            case "S" : submarine.hit(); break;
-            default: return;
-        }
+        if (turn === "player") {
+             switch (guess) {
+                case "D" : computerDestroyer.hit(); break;
+                case "CA" : computerCarrier.hit(); break;
+                case "CU" : computerCruiser.hit(); break;
+                case "B" : computerBattleShip.hit(); break;
+                case "S" : computerSubmarine.hit(); break;
+                default: return;
+            }
 
         return guess !== "" ? console.log("hit") : console.log("miss");
+
+        } else if (turn === "computer") {
+            switch (guess) {
+                case "D" : humanDestroyer.hit(); break;
+                case "CA" : humanCarrier.hit(); break;
+                case "CU" : humanCruiser.hit(); break;
+                case "B" : humanBattleShip.hit(); break
+                case "S" : humanSubmarine.hit(); break;
+                default: return;
+            }
+
+            return guess !== "" ? console.log("hit") : console.log("miss");
+        }
+
+        
+       
     }
 
-    const getCarrier = () => carrier;
-    const getBattleship = () => battleship;
-    const getSubmarine = () => submarine;
-    const getCrusier = () => cruiser;
-    const getDestroyer = () => destroyer;
+    return {
+            placeShip, 
+            addBoard, 
+            recieveAttack,
+            getHumanCarrier: humanShips.getHumanCarrier,
+            getHumanCruiser: humanShips.getHumanCruiser,
+            getHumanBattleShip: humanShips.getHumanBattleShip,
+            getHumanDestroyer: humanShips.getHumanDestroyer,
+            getHumanSubmarine: humanShips.getHumanDestroyer,
 
-    return {placeShip, getPlayerBoard, getComputerBoard, recieveAttack, getCarrier, getBattleship, getSubmarine, getCrusier, getDestroyer}
+            getComputerCarrier: computerShips.getComputerCarrier,
+            getComputerCruiser: computerShips.getComputerCruiser,
+            getComputerBattleShip: computerShips.getComputerBattleShip,
+            getComputerDestoryer: computerShips.getComputerDestoryer,
+            getComputerSubmarine: computerShips.getComputerSubmarine,
+
+            getHumanShips: ships.getHumanShips,
+            getComputerShips: ships.getComputerShips
+    }
+
 }
 
 export function Player() {
-    const addPlayer = (name, gameboard) => {
+    const addPlayer = (name, gameboard, ships) => {
         return {
             name,
             gameboard,
+            ships
         }
     }
     return {addPlayer}
-}
-
- export function GameController() {
-    const board = Gameboard();
-
-    const insert = (ship, array, rowStart, colStart, direction) => {
-        board.placeShip(ship, array, rowStart, colStart, direction);
-    }
-
-    const playRound = (array, row, col, ) => {
-        board.recieveAttack(array, row, col);
-    }
-    return {
-            insert, 
-            playRound, 
-            getPlayerBoard: board.getPlayerBoard, 
-            getComputerBoard: board.getComputerBoard,
-            getCarrier: board.getCarrier,
-            getBattleship: board.getBattleship,
-            getSubmarine: board.getSubmarine,
-            getCrusier: board.getCrusier,
-            getDestroyer: board.getDestroyer
-        }
 }
