@@ -6,31 +6,60 @@ function GameController() {
     const humanShips = board.getHumanShips();
     const computerShips = board.getComputerShips();
 
-    const playerBoard = [];
-    const computerBoard = [];
+    const humanBoard = board.getHumanBoard();
+    const computerBoard = board.getComputerBoard();
 
-    board.addBoard(playerBoard);
-    board.addBoard(computerBoard);
+    const humanCarrier = humanShips.getHumanCarrier();
+    const humanCruiser = humanShips.getHumanCruiser();
+    const humanBattleShip = humanShips.getHumanBattleShip();
+    const humanDestroyer  = humanShips.getHumanDestroyer();
+    const humanSubmarine = humanShips.getHumanSubmarine();
+
+    const computerCarrier = computerShips.getComputerCarrier();
+    const computerCruiser = computerShips.getComputerCruiser();
+    const computerBattleShip = computerShips.getComputerBattleShip();
+    const computerDestroyer  = computerShips.getComputerDestoryer();
+    const computerSubmarine = computerShips.getComputerSubmarine();
 
     const player = Player();
-    const humanPlayer = player.addPlayer("human", playerBoard, humanShips);
+    const humanPlayer = player.addPlayer("human", humanBoard, humanShips);
     const computerPlayer = player.addPlayer("computer", computerBoard, computerShips);
 
-    const getHuman = () => humanPlayer;
-    const getComputer = () => computerPlayer;
+     const getHuman = () => humanPlayer;
+     const getComputer = () => computerPlayer;
+
+      let gameRunning = true;
+      let activePlayer = humanPlayer.name;
+
+      const getActivePlayer = () => activePlayer;
+
+      const switchTurn = () => activePlayer = activePlayer === humanPlayer.name ? computerPlayer.name : humanPlayer.name;
+
+
+      const isRunning = () => gameRunning;
+
+      const printNewRound = () => board.printBoard();
 
     const insert = (ship, array, rowStart, colStart, direction) => {
-        board.placeShip(ship, array, rowStart, colStart, direction);
+      board.placeShip(ship, array, rowStart, colStart, direction);
+    };
+
+    const attack = (array, row, col) => {
+        board.recieveAttack(getActivePlayer(), array, row, col);
+
+        if (gameRunning) {
+         switchTurn();
+        }
     }
 
-    const attack = (turn, array, row, col, ) => {
-        board.recieveAttack(turn, array, row, col);
-    }
     return {
             insert, 
             attack, 
             getHuman,
+            printNewRound,
             getComputer,
+            getActivePlayer,
+            isRunning,
             getHumanCarrier: board.getHumanCarrier,
             getHumanCruiser: board.getHumanCruiser,
             getHumanBattleShip: board.getHumanBattleShip,
@@ -79,30 +108,31 @@ function GameController() {
     console.log(human);
 
     // human
-    game.insert(humanCarrier, human.gameboard, 0, 0, "right");
-    game.insert(humanCruiser, human.gameboard, 8, 4, "up");
-    game.insert(humanDestroyer, human.gameboard, 1, 9, "left");
-    game.insert(humanBattleShip, human.gameboard, 4, 3, "right");
-    game.insert(humanSubmarine, human.gameboard, 9, 9, "up");
+   game.insert(humanCarrier, human.gameboard, 0, 0, "right");
+   game.insert(humanCruiser, human.gameboard, 8, 4, "up");
+   game.insert(humanDestroyer, human.gameboard, 1, 9, "left");
+   game.insert(humanBattleShip, human.gameboard, 4, 3, "right");
+   game.insert(humanSubmarine, human.gameboard, 9, 9, "up");
 
     // computer 
-    game.insert(computerCarrier, computer.gameboard, 3, 7, "down");
-    game.insert(computerCruiser, computer.gameboard, 2, 5, "up");
-    game.insert(computerDestroyer, computer.gameboard, 8, 8, "right");
-    game.insert(computerBattleShip, computer.gameboard, 9, 0, "up");
-    game.insert(computerSubmarine, computer.gameboard, 4, 3, "down");
+   game.insert(computerCarrier, computer.gameboard, 3, 7, "down");
+   game.insert(computerCruiser, computer.gameboard, 2, 5, "up");
+   game.insert(computerDestroyer, computer.gameboard, 8, 8, "right");
+   game.insert(computerBattleShip, computer.gameboard, 9, 0, "up");
+   game.insert(computerSubmarine, computer.gameboard, 4, 3, "down");
 
-    game.attack("player", computer.gameboard, 0, 0);
-    game.attack("computer", human.gameboard, 1, 8);
-    game.attack("player", computer.gameboard, 8, 0);
-    game.attack("computer", human.gameboard, 1, 9);
+   game.attack(computer.gameboard, 0, 5);
+   game.attack(human.gameboard, 0, 0);
+   game.attack(computer.gameboard, 8, 8);
+
+   console.log(humanCarrier.shipDetails());
+   console.log(computerCarrier.shipDetails());
+
 
 
     const playerBoard = document.querySelector(".player-board");
     const computerBoard = document.querySelector(".computer-board");
 
-    
-    // if currentPlayer is human 
     const cruiserInfo = document.querySelector(".cruiser-info");
     cruiserInfo.textContent = humanCruiser.shipDetails();
     const carrierInfo = document.querySelector(".carrier-info");

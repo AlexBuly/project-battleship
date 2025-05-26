@@ -93,6 +93,16 @@ export function Gameboard () {
             }
         }
     }
+
+    const playerBoard = [];
+    const computerBoard = [];
+
+    addBoard(playerBoard);
+    addBoard(computerBoard);
+
+    const getHumanBoard = () => playerBoard;
+    const getComputerBoard = () => computerBoard;
+
     const ship = Ship();
     const ships = ship.ships();
     const humanShips = ships.getHumanShips();
@@ -153,7 +163,7 @@ export function Gameboard () {
     const recieveAttack = (turn, array, row, col) => {
         const guess = array[row][col];
 
-        if (turn === "player") {
+        if (turn === "human") {
              switch (guess) {
                 case "D" : computerDestroyer.hit(); break;
                 case "CA" : computerCarrier.hit(); break;
@@ -186,6 +196,8 @@ export function Gameboard () {
             placeShip, 
             addBoard, 
             recieveAttack,
+            getHumanBoard,
+            getComputerBoard,
             getHumanCarrier: humanShips.getHumanCarrier,
             getHumanCruiser: humanShips.getHumanCruiser,
             getHumanBattleShip: humanShips.getHumanBattleShip,
