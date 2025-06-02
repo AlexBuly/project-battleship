@@ -160,10 +160,18 @@ export function Gameboard () {
         }
     }
 
-    let turnMessage;
+    let attackMessage;
 
     const recieveAttack = (turn, array, row, col) => {
         const guess = array[row][col];
+
+         if (guess === "") {
+            attackMessage = "miss";
+            array[row][col] = "O";
+           } else if (guess !== "") {
+            attackMessage = "hit";
+            array[row][col] = "X";
+           }
 
         if (turn === "human") {
              switch (guess) {
@@ -174,7 +182,7 @@ export function Gameboard () {
                 case "S" : computerSubmarine.hit(); break;
                 default: return;
             }
-            guess !== "" ? turnMessage = "hit" : turnMessage = "miss";
+          
         } else if (turn === "computer") {
             switch (guess) {
                 case "D" : humanDestroyer.hit(); break;
@@ -184,16 +192,15 @@ export function Gameboard () {
                 case "S" : humanSubmarine.hit(); break;
                 default: return;
             }
-            guess !== "" ? turnMessage = "hit" : turnMessage = "miss";
         }
     }
 
-    const getTurnMessage = () => turnMessage;
+    const getAttackMessage = () => attackMessage;
 
     return {
             placeShip, 
             addBoard,
-            getTurnMessage, 
+            getAttackMessage, 
             recieveAttack,
             getHumanBoard,
             getComputerBoard,

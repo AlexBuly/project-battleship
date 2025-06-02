@@ -30,24 +30,54 @@ function GameController() {
       board.placeShip(ship, array, rowStart, colStart, direction);
     };
 
+    const arr = Array.from({length: 10}, () => new Array(10).fill(""));
+
+    const checkWin = () => {
+      if (board.getComputerBattleShip().sunk == true &&
+          board.getComputerCruiser().sunk == true &&
+          board.getComputerCarrier().sunk == true &&
+          board.getComputerSubmarine().sunk == true &&
+          board.getComputerDestoryer().sunk == true
+          ||
+          board.getHumanBattleShip().sunk == true &&
+          board.getHumanCarrier().sunk == true &&
+          board.getHumanDestroyer().sunk == true &&
+          board.getHumanCruiser.sunk == true &&
+          board.getHumanSubmarine.sunk == true
+        ) {
+          gameRunning = false;
+        }
+    }
+
+
+    const randomRow = () => Math.floor(Math.random() * arr.length);
+   const randomCol = () => Math.floor(Math.random() * arr.length);
+    
+
     const attack = (row, col) => {
         board.recieveAttack(getActivePlayer().name, getActiveGameboard(), row, col);
-        console.log(getActivePlayer().name);
-        console.log(getActiveGameboard());
-
         if (gameRunning) {
          switchTurn();
          switchGameboard();
+         randomRow();
+         randomCol();
+         console.log(`${row} ${col}`);
+
+        
+
         }
     }
 
     return {
             insert, 
-            attack, 
+            attack,
+            randomRow,
+            randomCol,
             getHuman,
             getComputer,
             getActivePlayer,
             isRunning,
+            getAttackMessage: board.getAttackMessage,
             getHumanCarrier: board.getHumanCarrier,
             getHumanCruiser: board.getHumanCruiser,
             getHumanBattleShip: board.getHumanBattleShip,
@@ -97,11 +127,6 @@ function GameController() {
    game.insert(game.getComputerBattleShip(), computer.gameboard, 9, 0, "up");
    game.insert(game.getComputerSubmarine(), computer.gameboard, 4, 3, "down");
 
-   /*game.attack(0, 5);
-   game.attack(0, 0);
-   game.attack(8, 8);
-   game.attack(0, 2);
-   game.attack(8, 9);*/
 
     const cruiserInfo = document.querySelector(".cruiser-info");
     const carrierInfo = document.querySelector(".carrier-info");
@@ -115,6 +140,8 @@ function GameController() {
     const battleshipInfoC = document.querySelector(".battleship-infoC");
     const submarineInfoC = document.querySelector(".submarine-infoC");
 
+    const attackMessage = document.querySelector(".attack-message");
+
     const playerName = document.querySelector(".player-name");
     playerName.textContent = game.getHuman().name;
 
@@ -124,8 +151,11 @@ function GameController() {
     const updateScreen = () => {
       playerBoard.textContent = "";
       computerBoard.textContent = "";
+      //attackMessage.textContent = ""
       displayBoard(human.gameboard, "player-cell", playerBoard);
       displayBoard(computer.gameboard, "computer-cell", computerBoard);
+
+      attackMessage.textContent = game.getAttackMessage();
 
       cruiserInfo.textContent = game.getHumanCruiser().shipDetails();
       carrierInfo.textContent = game.getHumanCarrier().shipDetails();
@@ -139,19 +169,39 @@ function GameController() {
       battleshipInfoC.textContent = game.getComputerBattleShip().shipDetails();
       submarineInfoC.textContent = game.getComputerSubmarine().shipDetails();  
     }
-   
 
-    const clickHandler = (e) => {
-       const selectedColumn = e.target.dataset.column;
-       const selectedRow = e.target.dataset.row;
+    const takeTurn = (row = null, col = null) => {
+      if (!game.isRunning()) return;
 
-       if (!selectedColumn || !selectedRow) return;
-       game.attack(parseInt(selectedRow), parseInt(selectedColumn));
-       updateScreen();
+      if (game.getActivePlayer().name === "human") {
+        if (row !== null && col !== null) {
+          game.attack(row, col);
+          updateScreen();
+          setTimeout(() => takeTurn(), 500);
+        }
+      } else {
+        let row, col;
+        do {
+          row = game.randomRow();
+          col = game.randomCol();
+        } while (game.getHuman().gameboard[row][col] === "X" || game.getHuman().gameboard[row][col] === "O");
+
+        game.attack(row, col);
+        updateScreen();
+      }
     }
 
-    playerBoard.addEventListener("click", clickHandler);
+    const clickHandler = (e) => {
+        if (game.getActivePlayer().name !== "human") return;
+
+        const selectedColumn = parseInt(e.target.dataset.column);
+        const selectedRow = parseInt(e.target.dataset.row);
+        takeTurn(selectedRow, selectedColumn);
+    }
+
     computerBoard.addEventListener("click", clickHandler);
+    
+
     updateScreen();   
  }
 

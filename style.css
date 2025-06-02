@@ -14,10 +14,11 @@ button {
     justify-content: center;
 }
 
-.title {
+.heading {
+    text-align: center;
     grid-column: 2;
-    justify-self: center;
 }
+
 
 .shipBtns {
     grid-row: 3;
@@ -55,6 +56,14 @@ button {
 
 .player-cell:hover, .computer-cell:hover {
     background-color: rgb(214, 210, 210);
+}
+
+.player-cell:visited, .computer-cell:visited {
+    background-color: brown;
+}
+
+.player-cell:active, .computer-cell:active {
+    background-color: rgb(151, 148, 148);
 }
 
 .ship-infos {
