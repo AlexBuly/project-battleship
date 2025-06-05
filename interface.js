@@ -57,6 +57,7 @@ function GameController() {
     const attack = (row, col) => {
         board.recieveAttack(getActivePlayer().name, getActiveGameboard(), row, col);
         if (gameRunning) {
+         checkWin();
          switchTurn();
          switchGameboard();
          randomRow();
@@ -102,6 +103,8 @@ function GameController() {
             cellButton.dataset.row = rowIndex;
             cellButton.dataset.column = colIndex;
             cellButton.textContent = board[rowIndex][colIndex];
+            cellButton.style.backgroundColor = "white";
+            cellButton.style.border = "2px solid black";
             parent.appendChild(cellButton);
          });
       })
@@ -113,7 +116,6 @@ function GameController() {
     const computerBoard = document.querySelector(".computer-board");
 
 
-    // human
    game.insert(game.getHumanCarrier(), human.gameboard, 0, 0, "right");
    game.insert(game.getHumanCruiser(), human.gameboard, 8, 4, "up");
    game.insert(game.getHumanDestroyer(), human.gameboard, 1, 9, "left");
@@ -134,13 +136,7 @@ function GameController() {
     const battleshipInfo = document.querySelector(".battleship-info");
     const submarineInfo = document.querySelector(".submarine-info");
 
-    const cruiserInfoC = document.querySelector(".cruiser-infoC");
-    const carrierC = document.querySelector(".carrier-infoC");
-    const destroyerInfoC = document.querySelector(".destroyer-infoC");
-    const battleshipInfoC = document.querySelector(".battleship-infoC");
-    const submarineInfoC = document.querySelector(".submarine-infoC");
-
-    const attackMessage = document.querySelector(".attack-message");
+    let message = document.querySelector(".attack-message");
 
     const playerName = document.querySelector(".player-name");
     playerName.textContent = game.getHuman().name;
@@ -152,22 +148,30 @@ function GameController() {
       playerBoard.textContent = "";
       computerBoard.textContent = "";
       //attackMessage.textContent = ""
+      const running = game.isRunning();
       displayBoard(human.gameboard, "player-cell", playerBoard);
       displayBoard(computer.gameboard, "computer-cell", computerBoard);
 
-      attackMessage.textContent = game.getAttackMessage();
+      const attackMessage = game.getAttackMessage();
+      const winMessage = `${game.getActivePlayer().name} wins!`;
 
+      if (!running) {
+        message.textContent = winMessage;
+      } 
+        
+      message.textContent = attackMessage;
+      
       cruiserInfo.textContent = game.getHumanCruiser().shipDetails();
       carrierInfo.textContent = game.getHumanCarrier().shipDetails();
       destroyerInfo.textContent = game.getHumanDestroyer().shipDetails();
       battleshipInfo.textContent = game.getHumanBattleShip().shipDetails();
       submarineInfo.textContent = game.getHumanSubmarine().shipDetails();
 
-      cruiserInfoC.textContent = game.getComputerCruiser().shipDetails();
-      carrierC.textContent = game.getComputerCarrier().shipDetails();
-      destroyerInfoC.textContent = game.getComputerDestoryer().shipDetails();
-      battleshipInfoC.textContent = game.getComputerBattleShip().shipDetails();
-      submarineInfoC.textContent = game.getComputerSubmarine().shipDetails();  
+      // cruiserInfoC.textContent = game.getComputerCruiser().shipDetails();
+      // carrierC.textContent = game.getComputerCarrier().shipDetails();
+      // destroyerInfoC.textContent = game.getComputerDestoryer().shipDetails();
+      // battleshipInfoC.textContent = game.getComputerBattleShip().shipDetails();
+      // submarineInfoC.textContent = game.getComputerSubmarine().shipDetails();  
     }
 
     const takeTurn = (row = null, col = null) => {

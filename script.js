@@ -18,7 +18,7 @@ export function Ship() {
             },
 
             shipDetails() {
-                return `name: ${this.name}, length: ${this.length}, hits: ${this.hitCount}, sunk: ${this.sunk}`
+                return `${this.name}, hits: ${this.hitCount}, sunk: ${this.sunk}`
             },
 
          };

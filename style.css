@@ -1,5 +1,10 @@
 * {
     box-sizing: border-box;
+    background-color: lightskyblue;
+}
+
+:root {
+    --border-radius: 10px;
 }
 
 button {
@@ -9,14 +14,19 @@ button {
 
 .container {
     display: grid;
-    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-columns: 1fr 4fr;
     grid-template-rows: 1fr 4fr 1fr;
     justify-content: center;
+    align-content: start;
 }
 
 .heading {
     text-align: center;
     grid-column: 2;
+}
+
+.attack-message {
+    margin: 0;
 }
 
 
@@ -33,7 +43,7 @@ button {
     gap: 1em;
     grid-row: 2;
     align-items: center;
-    justify-content: center;
+    justify-content: center
 }
 
 .player-name, .computer-name {
@@ -43,24 +53,41 @@ button {
     display: grid;
     grid-template-rows: repeat(10, 1fr);
     grid-template-columns: repeat(10, 1fr);
-    height: 350px;
-    width: 350px;
+    height: 450px;
+    width: 450px;
     justify-self: center;
     grid-row: 2;
 }
 
-.player-cell, .computer-cell {
-    border: 1px solid black;
-    background-color: white;
+/* border-radius */
+.player-cell:nth-child(1), .computer-cell:nth-child(1) {
+    border-radius: var(--border-radius) 0 0 0;
 }
+
+.player-cell:nth-child(10), .computer-cell:nth-child(10) {
+    border-radius: 0 var(--border-radius) 0 0;
+}
+
+.player-cell:nth-child(91), .computer-cell:nth-child(91) {
+    border-radius: 0 0 0 var(--border-radius);
+}
+
+.player-cell:nth-child(100), .computer-cell:nth-child(100) {
+    border-radius: 0 0  var(--border-radius) 0;
+}
+
+.player-cell, .computer-cell {
+    font-weight: bold;
+}
+
+
+
+
 
 .player-cell:hover, .computer-cell:hover {
-    background-color: rgb(214, 210, 210);
+    background-color: rgba(150, 150, 150, 0.774);
 }
 
-.player-cell:visited, .computer-cell:visited {
-    background-color: brown;
-}
 
 .player-cell:active, .computer-cell:active {
     background-color: rgb(151, 148, 148);
@@ -69,6 +96,31 @@ button {
 .ship-infos {
     grid-row: 2;
     
+}
+
+.shipBtns {
+    gap: 2%;
+}
+
+.shipBtns button {
+    background-color: red;
+    color: white;
+    border-radius: var(--border-radius);
+    font-size: medium;
+    /*border-left: 5px solid black;*/
+    border-bottom: 4px solid black;
+    font-weight: bold;
+}
+
+.shipBtns button:hover {
+    border-bottom: 2px solid black;
+    background-color: rgb(223, 1, 1);
+    color: rgb(235, 234, 234);
+    /*background-color: rgb(105, 0, 0);*/
+}
+
+.shipBtns button:active {
+    background-color: rgb(170, 0, 0);
 }
 
 .ship-infosC {
