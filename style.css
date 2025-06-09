@@ -102,6 +102,10 @@ button {
     gap: 2%;
 }
 
+.game-start {
+    background-color: white;
+}
+
 .shipBtns button {
     background-color: red;
     color: white;

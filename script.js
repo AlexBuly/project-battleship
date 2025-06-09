@@ -120,43 +120,46 @@ export function Gameboard () {
     const computerShips = ships.getComputerShips();
 
     const placeShip = (shipName, array, rowStart, colStart, direction) => {
-        let marking
+        let marking;
 
-        switch (shipName.name) {
-            case "destroyer": marking = "D"; break;
-            case "cruiser": marking = "CU"; break;
-            case "carrier": marking = "CA"; break;
-            case "battleship": marking = "B"; break;
-            case "submarine": marking = "S"; break;
-            default: return; 
-        }
+        if (array[rowStart][colStart] == "") {
+            switch (shipName.name) {
+                case "destroyer": marking = "D"; break;
+                case "cruiser": marking = "CU"; break;
+                case "carrier": marking = "CA"; break;
+                case "battleship": marking = "B"; break;
+                case "submarine": marking = "S"; break;
+                default: return; 
+            }
 
-        const len = shipName.length;
+            const len = shipName.length;
 
-        if (direction === "right") {
-            if (colStart + len <= 10) {
-                for (let i = 0; i < len; i++) {
-                    array[rowStart][colStart + i] = marking;
+            if (direction === "right") {
+                if (colStart + len <= 10) {
+                    for (let i = 0; i < len; i++) {
+                        array[rowStart][colStart + i] = marking;
+                    }
+                }
+            } else if (direction === "down") {
+                if (rowStart + len <= 10) {
+                    for (let i = 0; i < len; i++) {
+                        array[rowStart + i][colStart] = marking;
+                    }
+                }
+            } else if (direction === "left") {
+                if (colStart - len + 1 >= 0) {
+                    for (let i = 0; i < len; i++) {
+                        array[rowStart][colStart - i] = marking;
+                    }
+                }
+            } else if (direction === "up") {
+                if (rowStart - len + 1 >= 0) {
+                    for (let i = 0; i < len; i++) {
+                        array[rowStart - i][colStart] = marking;
+                    }
                 }
             }
-        } else if (direction === "down") {
-            if (rowStart + len <= 10) {
-                for (let i = 0; i < len; i++) {
-                    array[rowStart + i][colStart] = marking;
-                }
-            }
-        } else if (direction === "left") {
-            if (colStart - len + 1 >= 0) {
-                for (let i = 0; i < len; i++) {
-                    array[rowStart][colStart - i] = marking;
-                }
-            }
-        } else if (direction === "up") {
-            if (rowStart - len + 1 >= 0) {
-                for (let i = 0; i < len; i++) {
-                    array[rowStart - i][colStart] = marking;
-                }
-            }
+            
         }
     }
 

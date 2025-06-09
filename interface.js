@@ -51,13 +51,14 @@ function GameController() {
 
 
     const randomRow = () => Math.floor(Math.random() * arr.length);
-   const randomCol = () => Math.floor(Math.random() * arr.length);
+    const randomCol = () => Math.floor(Math.random() * arr.length);
     
 
     const attack = (row, col) => {
         board.recieveAttack(getActivePlayer().name, getActiveGameboard(), row, col);
+        checkWin();
+
         if (gameRunning) {
-         checkWin();
          switchTurn();
          switchGameboard();
          randomRow();
@@ -115,19 +116,124 @@ function GameController() {
     const playerBoard = document.querySelector(".player-board");
     const computerBoard = document.querySelector(".computer-board");
 
+    const cruiserBtn = document.querySelector(".cruiser-btn");
+    const carrierBtn = document.querySelector(".carrier-btn");
+    const battleshipBtn = document.querySelector(".battleship-btn");
+    const submarineBtn = document.querySelector(".submarine-btn");
+    const destroyerBtn = document.querySelector(".destroyer-btn");
 
-   game.insert(game.getHumanCarrier(), human.gameboard, 0, 0, "right");
-   game.insert(game.getHumanCruiser(), human.gameboard, 8, 4, "up");
-   game.insert(game.getHumanDestroyer(), human.gameboard, 1, 9, "left");
-   game.insert(game.getHumanBattleShip(), human.gameboard, 4, 3, "right");
-   game.insert(game.getHumanSubmarine(), human.gameboard, 9, 9, "up");
+    cruiserBtn.addEventListener("click", () => {
+      // if exists remove it
+     game.insert(game.getHumanCruiser(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction"));
+     updateScreen();
+    });
+
+    carrierBtn.addEventListener("click", () => {
+      game.insert(game.getHumanCarrier(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction"));
+      updateScreen();
+    });
+
+    battleshipBtn.addEventListener("click", () => {
+      game.insert(game.getHumanBattleShip(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction"));
+      updateScreen();
+    });
+
+    submarineBtn.addEventListener("click", () => {
+      game.insert(game.getHumanSubmarine(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction"));
+      updateScreen();
+    });
+
+    destroyerBtn.addEventListener("click", () => {
+      game.insert(game.getHumanDestroyer(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction"));
+      updateScreen();
+    });
+
+    const directions = ["up", "down", "left", "right"];
+
+const isPlacementValid = (array, rowStart, colStart, direction, len) => {
+    if (direction === "right") {
+        if (colStart + len <= 10) {
+            for (let i = 0; i < len; i++) {
+                if (array[rowStart][colStart + i] !== "") return false;
+            }
+            return true;
+        }
+    } else if (direction === "down") {
+        if (rowStart + len <= 10) {
+            for (let i = 0; i < len; i++) {
+                if (array[rowStart + i][colStart] !== "") return false;
+            }
+            return true;
+        }
+    } else if (direction === "left") {
+        if (colStart - len + 1 >= 0) {
+            for (let i = 0; i < len; i++) {
+                if (array[rowStart][colStart - i] !== "") return false;
+            }
+            return true;
+        }
+    } else if (direction === "up") {
+        if (rowStart - len + 1 >= 0) {
+            for (let i = 0; i < len; i++) {
+                if (array[rowStart - i][colStart] !== "") return false;
+            }
+            return true;
+        }
+    }
+    return false;
+};
+
+const placeShipRandomly = (ship, array) => {
+    let placed = false;
+    while (!placed) {
+        const row = game.randomRow();
+        const col = game.randomCol();
+        const direction = directions[Math.floor(Math.random() * directions.length)];
+        if (isPlacementValid(array, row, col, direction, ship.length)) {
+            game.insert(ship, array, row, col, direction);
+            placed = true;
+        }
+    }
+};
+
+const randomizeComputerShips = () => {
+    const board = computer.gameboard;
+
+
+    placeShipRandomly(game.getComputerCarrier(), board);
+    placeShipRandomly(game.getComputerCruiser(), board);
+    placeShipRandomly(game.getComputerDestoryer(), board);
+    placeShipRandomly(game.getComputerBattleShip(), board);
+    placeShipRandomly(game.getComputerSubmarine(), board);
+
+    updateScreen();  
+};
+
+document.querySelector(".game-start").addEventListener("click", () => {
+  randomizeComputerShips();
+  document.querySelector(".game-start").style.visibility = "hidden";
+
+});
+
+
+
+
+
+    //game.insert(game.getHumanCarrier(), human.gameboard, parseInt(cRow), parseInt(cCol), cDirection);
+
+
+  //  game.insert(game.getHumanCarrier(), human.gameboard, 0, 0, "right");
+  //  game.insert(game.getHumanCruiser(), human.gameboard, 8, 4, "up");
+  //  game.insert(game.getHumanDestroyer(), human.gameboard, 1, 9, "left");
+  //  game.insert(game.getHumanBattleShip(), human.gameboard, 4, 3, "right");
+  //  game.insert(game.getHumanSubmarine(), human.gameboard, 9, 9, "up");
 
     // computer 
-   game.insert(game.getComputerCarrier(), computer.gameboard, 3, 7, "down");
-   game.insert(game.getComputerCruiser(), computer.gameboard, 2, 5, "up");
-   game.insert(game.getComputerDestoryer(), computer.gameboard, 8, 8, "right");
-   game.insert(game.getComputerBattleShip(), computer.gameboard, 9, 0, "up");
-   game.insert(game.getComputerSubmarine(), computer.gameboard, 4, 3, "down");
+  //game.insert(game.getComputerCarrier(), computer.gameboard, 3, 7, "down");
+  //  game.insert(game.getComputerCruiser(), computer.gameboard, 2, 5, "up");
+  //  game.insert(game.getComputerDestoryer(), computer.gameboard, 8, 8, "right");
+  //  game.insert(game.getComputerBattleShip(), computer.gameboard, 9, 0, "up");
+  //  game.insert(game.getComputerSubmarine(), computer.gameboard, 4, 3, "down");
 
 
     const cruiserInfo = document.querySelector(".cruiser-info");
@@ -135,6 +241,8 @@ function GameController() {
     const destroyerInfo = document.querySelector(".destroyer-info");
     const battleshipInfo = document.querySelector(".battleship-info");
     const submarineInfo = document.querySelector(".submarine-info");
+
+    const computerCell = document.querySelector(".computer-cell");
 
     let message = document.querySelector(".attack-message");
 
@@ -151,6 +259,8 @@ function GameController() {
       const running = game.isRunning();
       displayBoard(human.gameboard, "player-cell", playerBoard);
       displayBoard(computer.gameboard, "computer-cell", computerBoard);
+      //const playerCell = document.querySelectorAll(".player-cell");
+      //playerCell.style.color = "black";
 
       const attackMessage = game.getAttackMessage();
       const winMessage = `${game.getActivePlayer().name} wins!`;
@@ -166,12 +276,6 @@ function GameController() {
       destroyerInfo.textContent = game.getHumanDestroyer().shipDetails();
       battleshipInfo.textContent = game.getHumanBattleShip().shipDetails();
       submarineInfo.textContent = game.getHumanSubmarine().shipDetails();
-
-      // cruiserInfoC.textContent = game.getComputerCruiser().shipDetails();
-      // carrierC.textContent = game.getComputerCarrier().shipDetails();
-      // destroyerInfoC.textContent = game.getComputerDestoryer().shipDetails();
-      // battleshipInfoC.textContent = game.getComputerBattleShip().shipDetails();
-      // submarineInfoC.textContent = game.getComputerSubmarine().shipDetails();  
     }
 
     const takeTurn = (row = null, col = null) => {
@@ -191,6 +295,7 @@ function GameController() {
         } while (game.getHuman().gameboard[row][col] === "X" || game.getHuman().gameboard[row][col] === "O");
 
         game.attack(row, col);
+
         updateScreen();
       }
     }
@@ -204,7 +309,7 @@ function GameController() {
     }
 
     computerBoard.addEventListener("click", clickHandler);
-    
+
 
     updateScreen();   
  }
