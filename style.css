@@ -1,14 +1,26 @@
 * {
     box-sizing: border-box;
-    background-color: lightskyblue;
+    margin: 0;
 }
 
 :root {
     --border-radius: 10px;
 }
 
-button {
-    cursor: pointer;
+body {
+   height: 100vh;
+}
+
+.cruiser,
+.carrier,
+.battleship,
+.destroyer,
+.submarine {
+    background-color: rgb(207, 76, 76);
+    border: 2px solid white;
+    border-radius: 1em;
+    text-align: center;
+    color: white;
 }
 
 
@@ -18,6 +30,9 @@ button {
     grid-template-rows: 1fr 4fr 1fr;
     justify-content: center;
     align-content: start;
+    background-color: lightskyblue;
+    height: 100%;
+    padding: 1em;
 }
 
 .heading {
@@ -78,23 +93,32 @@ button {
 
 .player-cell, .computer-cell {
     font-weight: bold;
+    background-color: white;
+}
+
+/* .computer-cell {
+    color: white;
+} */
+
+
+
+
+
+ .computer-cell:hover {
+    background-color: rgb(219, 219, 219);
+    cursor: pointer;
 }
 
 
-
-
-
-.player-cell:hover, .computer-cell:hover {
-    background-color: rgba(150, 150, 150, 0.774);
-}
-
-
-.player-cell:active, .computer-cell:active {
-    background-color: rgb(151, 148, 148);
+ .computer-cell:active {
+    background-color: rgb(155, 155, 155);
 }
 
 .ship-infos {
     grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     
 }
 
