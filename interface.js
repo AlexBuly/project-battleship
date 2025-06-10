@@ -62,11 +62,7 @@ function GameController() {
          switchTurn();
          switchGameboard();
          randomRow();
-         randomCol();
-         console.log(`${row} ${col}`);
-
-        
-
+         randomCol(); 
         }
     }
 
@@ -104,8 +100,19 @@ function GameController() {
             cellButton.dataset.row = rowIndex;
             cellButton.dataset.column = colIndex;
             cellButton.textContent = board[rowIndex][colIndex];
-            cellButton.style.backgroundColor = "white";
             cellButton.style.border = "2px solid black";
+
+            if (className == "computer-cell") {
+              if (cellButton.textContent == "X" || cellButton.textContent == "O") {
+                cellButton.style.color = "black";
+              }  else {
+                cellButton.style.color = "white";
+              }
+            }
+
+            if (cellButton.textContent == "X") {
+              cellButton.style.backgroundColor = "pink";
+            }
             parent.appendChild(cellButton);
          });
       })
@@ -124,27 +131,27 @@ function GameController() {
 
     cruiserBtn.addEventListener("click", () => {
       // if exists remove it
-     game.insert(game.getHumanCruiser(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction"));
+     game.insert(game.getHumanCruiser(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction (left, right, up, down):"));
      updateScreen();
     });
 
     carrierBtn.addEventListener("click", () => {
-      game.insert(game.getHumanCarrier(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction"));
+      game.insert(game.getHumanCarrier(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction (left, right, up, down):"));
       updateScreen();
     });
 
     battleshipBtn.addEventListener("click", () => {
-      game.insert(game.getHumanBattleShip(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction"));
+      game.insert(game.getHumanBattleShip(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction (left, right, up, down"));
       updateScreen();
     });
 
     submarineBtn.addEventListener("click", () => {
-      game.insert(game.getHumanSubmarine(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction"));
+      game.insert(game.getHumanSubmarine(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction (left, right, up, down):"));
       updateScreen();
     });
 
     destroyerBtn.addEventListener("click", () => {
-      game.insert(game.getHumanDestroyer(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction"));
+      game.insert(game.getHumanDestroyer(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction (left, right, up, down):"));
       updateScreen();
     });
 
@@ -259,9 +266,6 @@ document.querySelector(".game-start").addEventListener("click", () => {
       const running = game.isRunning();
       displayBoard(human.gameboard, "player-cell", playerBoard);
       displayBoard(computer.gameboard, "computer-cell", computerBoard);
-      //const playerCell = document.querySelectorAll(".player-cell");
-      //playerCell.style.color = "black";
-
       const attackMessage = game.getAttackMessage();
       const winMessage = `${game.getActivePlayer().name} wins!`;
 
