@@ -18,7 +18,7 @@ export function Ship() {
             },
 
             shipDetails() {
-                return `${this.name}, hits: ${this.hitCount}, sunk: ${this.sunk}`
+                return `hits: ${this.hitCount} sunk: ${this.sunk}`
             },
 
          };
@@ -138,28 +138,37 @@ export function Gameboard () {
                 if (colStart + len <= 10) {
                     for (let i = 0; i < len; i++) {
                         array[rowStart][colStart + i] = marking;
-                    }
+                    } 
+                } else {
+                    alert("Invalid move")
                 }
             } else if (direction === "down") {
                 if (rowStart + len <= 10) {
                     for (let i = 0; i < len; i++) {
                         array[rowStart + i][colStart] = marking;
                     }
+                } else {
+                    alert("Invalid move")
                 }
             } else if (direction === "left") {
                 if (colStart - len + 1 >= 0) {
                     for (let i = 0; i < len; i++) {
                         array[rowStart][colStart - i] = marking;
                     }
+                } else {
+                    alert("Invalid move")
                 }
             } else if (direction === "up") {
                 if (rowStart - len + 1 >= 0) {
                     for (let i = 0; i < len; i++) {
                         array[rowStart - i][colStart] = marking;
                     }
+                } else {
+                    alert("Invalid move");
                 }
-            }
-            
+            } else {
+                alert("Invalid move");
+            }            
         }
     }
 

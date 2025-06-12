@@ -103,16 +103,11 @@ function GameController() {
             cellButton.style.border = "2px solid black";
 
             if (className == "computer-cell") {
-              if (cellButton.textContent == "X" || cellButton.textContent == "O") {
-                cellButton.style.color = "black";
-              }  else {
-                cellButton.style.color = "white";
-              }
+              cellButton.textContent == "X" || cellButton.textContent == "O" ? cellButton.style.color = "black" :
+              cellButton.style.color = "white";
             }
 
-            if (cellButton.textContent == "X") {
-              cellButton.style.backgroundColor = "pink";
-            }
+            if (cellButton.textContent == "X") cellButton.style.backgroundColor = "rgb(207, 76, 76)";
             parent.appendChild(cellButton);
          });
       })
@@ -130,7 +125,6 @@ function GameController() {
     const destroyerBtn = document.querySelector(".destroyer-btn");
 
     cruiserBtn.addEventListener("click", () => {
-      // if exists remove it
      game.insert(game.getHumanCruiser(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction (left, right, up, down):"));
      updateScreen();
     });
@@ -222,27 +216,6 @@ document.querySelector(".game-start").addEventListener("click", () => {
 
 });
 
-
-
-
-
-    //game.insert(game.getHumanCarrier(), human.gameboard, parseInt(cRow), parseInt(cCol), cDirection);
-
-
-  //  game.insert(game.getHumanCarrier(), human.gameboard, 0, 0, "right");
-  //  game.insert(game.getHumanCruiser(), human.gameboard, 8, 4, "up");
-  //  game.insert(game.getHumanDestroyer(), human.gameboard, 1, 9, "left");
-  //  game.insert(game.getHumanBattleShip(), human.gameboard, 4, 3, "right");
-  //  game.insert(game.getHumanSubmarine(), human.gameboard, 9, 9, "up");
-
-    // computer 
-  //game.insert(game.getComputerCarrier(), computer.gameboard, 3, 7, "down");
-  //  game.insert(game.getComputerCruiser(), computer.gameboard, 2, 5, "up");
-  //  game.insert(game.getComputerDestoryer(), computer.gameboard, 8, 8, "right");
-  //  game.insert(game.getComputerBattleShip(), computer.gameboard, 9, 0, "up");
-  //  game.insert(game.getComputerSubmarine(), computer.gameboard, 4, 3, "down");
-
-
     const cruiserInfo = document.querySelector(".cruiser-info");
     const carrierInfo = document.querySelector(".carrier-info");
     const destroyerInfo = document.querySelector(".destroyer-info");
@@ -262,7 +235,6 @@ document.querySelector(".game-start").addEventListener("click", () => {
     const updateScreen = () => {
       playerBoard.textContent = "";
       computerBoard.textContent = "";
-      //attackMessage.textContent = ""
       const running = game.isRunning();
       displayBoard(human.gameboard, "player-cell", playerBoard);
       displayBoard(computer.gameboard, "computer-cell", computerBoard);
