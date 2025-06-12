@@ -18,7 +18,7 @@ body {
 .submarine {
     background-color: rgb(207, 76, 76);
     border: 2px solid white;
-    border-radius: 1em;
+    border-radius: var(--border-radius);
     text-align: center;
     color: white;
 }
@@ -96,22 +96,11 @@ body {
     background-color: white;
 }
 
-/* .computer-cell {
-    color: white;
-} */
-
-
 
 
 
  .computer-cell:hover {
-    background-color: rgb(219, 219, 219);
     cursor: pointer;
-}
-
-
- .computer-cell:active {
-    background-color: rgb(155, 155, 155);
 }
 
 .ship-infos {
@@ -130,28 +119,34 @@ body {
     background-color: white;
 }
 
-.shipBtns button {
+.shipBtns button, .game-start {
     background-color: red;
     color: white;
     border-radius: var(--border-radius);
     font-size: medium;
-    /*border-left: 5px solid black;*/
+    cursor: pointer;
     border-bottom: 4px solid black;
     font-weight: bold;
 }
 
-.shipBtns button:hover {
+.shipBtns button:hover, .game-start:hover {
     border-bottom: 2px solid black;
     background-color: rgb(223, 1, 1);
     color: rgb(235, 234, 234);
-    /*background-color: rgb(105, 0, 0);*/
 }
 
-.shipBtns button:active {
+.shipBtns button:active, .game-start:active {
     background-color: rgb(170, 0, 0);
 }
 
 .ship-infosC {
     grid-column: 3;
     grid-row: 2;
+}
+
+@media screen and (max-width: 1000px) {
+ .boards {
+    flex-direction: column;
+
+ }
 }
