@@ -125,27 +125,27 @@ function GameController() {
     const destroyerBtn = document.querySelector(".destroyer-btn");
 
     cruiserBtn.addEventListener("click", () => {
-     game.insert(game.getHumanCruiser(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction (left, right, up, down):"));
+     game.insert(game.getHumanCruiser(), human.gameboard, parseInt(prompt("Enter row index:")), parseInt(prompt("Enter column index:")), prompt("Enter direction (left, right, up, down):"));
      updateScreen();
     });
 
     carrierBtn.addEventListener("click", () => {
-      game.insert(game.getHumanCarrier(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction (left, right, up, down):"));
+      game.insert(game.getHumanCarrier(), human.gameboard, parseInt(prompt("Enter row index:")), parseInt(prompt("Enter column index:")), prompt("Enter direction (left, right, up, down):"));
       updateScreen();
     });
 
     battleshipBtn.addEventListener("click", () => {
-      game.insert(game.getHumanBattleShip(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction (left, right, up, down"));
+      game.insert(game.getHumanBattleShip(), human.gameboard, parseInt(prompt("Enter row index:")), parseInt(prompt("Enter column index:")), prompt("Enter direction (left, right, up, down"));
       updateScreen();
     });
 
     submarineBtn.addEventListener("click", () => {
-      game.insert(game.getHumanSubmarine(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction (left, right, up, down):"));
+      game.insert(game.getHumanSubmarine(), human.gameboard, parseInt(prompt("Enter row index:")), parseInt(prompt("Enter column index:")), prompt("Enter direction (left, right, up, down):"));
       updateScreen();
     });
 
     destroyerBtn.addEventListener("click", () => {
-      game.insert(game.getHumanDestroyer(), human.gameboard, parseInt(prompt("Enter row:")), parseInt(prompt("Enter column:")), prompt("Enter direction (left, right, up, down):"));
+      game.insert(game.getHumanDestroyer(), human.gameboard, parseInt(prompt("Enter row index:")), parseInt(prompt("Enter column index:")), prompt("Enter direction (left, right, up, down):"));
       updateScreen();
     });
 

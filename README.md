@@ -1,1 +1,5 @@
-# project-battleship
+In this, project I created the game battleship. In this game, there are 5 ships: battleship, cruiser, carrier, submarine, and destroyer. The game starts by players placing their ships on a 10x10 grid gameboard. Battleships have a length of 4 cell grid cells, cruisers have a length of 3, carriers have a length of 5, submarines have a length of 3, and destroyers have a length of 2. In this project, there are 2 players, the human player and computer player.
+
+Next, a function called placeShips is used to put ships on the gameboards.This function takes in a ship name, the gameboard it will be placed on, the row starting index, the column starting index, and direction that the player wants the ship to go. If any are invalid, an alert message is displayed. 
+
+The last factory function used is the Player function. Each player has a name, gameboard, and ships objects. 
